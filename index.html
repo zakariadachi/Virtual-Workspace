@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Grid sur Plan d'Étage avec Sidebar Postes</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <div class="main-layout">
+    <aside class="sidebar-postes">
+      <h2> Employees</h2>
+      <button class="add-post-btn" id="addPostBtn"><i class="fas fa-plus"></i> Ajouter un employee</button>
+    </aside>
+    <div class="floorplan-area">
+      <div class="floorplan-grid">
+        <img src="590d32ea-316d-43c6-a8b0-f0c961fdef06.jpg" alt="Plan d'étage" class="floor-image">
+        <button class="room-add-btn" id="btn-room1" style="grid-area: room1;"><i class="fa fa-plus"></i></button>
+        <button class="room-add-btn" id="btn-room2" style="grid-area: room2;"><i class="fas fa-plus"></i></button>
+        <button class="room-add-btn" id="btn-room3" style="grid-area: room3;"><i class="fas fa-plus"></i></button>
+        <button class="room-add-btn" id="btn-room4" style="grid-area: room4;"><i class="fas fa-plus"></i></button>
+        <button class="room-add-btn" id="btn-room5" style="grid-area: room5;"><i class="fas fa-plus"></i></button>
+        <button class="room-add-btn" id="btn-room6" style="grid-area: room6;"><i class="fas fa-plus"></i></button>
+      </div>
+    </div>
+  </div>
+  <!-- Modale Employé -->
+  <!-- <div class="modal" id="addEmployeeModal">
+    <div class="modal-dialog">
+      <form id="addEmployeeForm">
+        <h2>Ajouter un employé</h2>
+        <label>Nom
+          <input type="text" name="nom" required>
+        </label>
+        <label>Rôle
+          <input type="text" name="role" required>
+        </label>
+        <label>Photo (URL)
+          <input type="url" name="photo">
+        </label>
+        <label>Email
+          <input type="email" name="email">
+        </label>
+        <label>Téléphone
+          <input type="tel" name="telephone">
+        </label>
+        <div class="experiences-section">
+          <label>Expériences professionnelles</label>
+          <div id="experiencesList"></div>
+          <button type="button" class="add-exp-btn" id="addExpBtn"><i class="fas fa-plus"></i> Ajouter une expérience</button>
+        </div>
+        <div class="modal-actions">
+          <button type="submit" class="success">Enregistrer</button>
+          <button type="button" class="danger" id="closeModalBtn">Annuler</button>
+        </div>
+      </form>
+    </div> -->
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
