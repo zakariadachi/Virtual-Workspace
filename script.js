@@ -137,3 +137,67 @@ function validateDates() {
     return true;
 }
 
+// Soumission du formulaire d'ajout d'employé
+addEmployeeForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    
+    if (!validateDates()) {
+        return;
+    }
+    
+    const formData = new FormData(addEmployeeForm);
+    const experiences = Array.from(document.querySelectorAll('.experience-item input'))
+        .map(input => input.value.trim())
+        .filter(exp => exp !== '');
+    
+    const newEmployee = {
+        id: nextId++,
+        name: formData.get('name'),
+        role: formData.get('role'),
+        photo: formData.get('photo'),
+        startDate: formData.get('startDate'),
+        endDate: formData.get('endDate'),
+        email: formData.get('email'),
+        phone: formData.get('phone'),
+        experiences: experiences,
+        location: 'Unassigned'
+    };
+    
+    employees.push(newEmployee);
+    saveToLocalStorage();
+    loadEmployees();
+    
+    // Réinitialiser le formulaire
+    addEmployeeForm.reset();
+    experiencesList.innerHTML = '';
+    addExperience();
+    updatePhotoPreview(photoPreview, '');
+    addEmployeeModal.classList.remove('show');
+    
+    alert('Employee added successfully!');
+});
+
+// Charger et afficher les employés
+function loadEmployees() {
+    updateStaffList();
+    updateRooms();
+}
+
+function updateStaffList() {
+    staffList.innerHTML = '';
+    
+    const unassignedEmployees = employees.filter(emp => emp.location === 'Unassigned');
+    
+    if (unassignedEmployees.length === 0) {
+        const emptyMessage = document.createElement('div');
+        emptyMessage.className = 'empty-message';
+        emptyMessage.textContent = 'No unassigned employees';
+        staffList.appendChild(emptyMessage);
+        return;
+    }
+    
+    unassignedEmployees.forEach(employee => {
+        const staffItem = createStaffElement(employee);
+        staffList.appendChild(staffItem);
+    });
+}
