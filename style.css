@@ -596,7 +596,7 @@ body {
   font-weight: 500;
 }
 
-profile-experiences h3 {
+.profile-experiences h3 {
   margin-bottom: 1rem;
   color: var(--primary);
 }

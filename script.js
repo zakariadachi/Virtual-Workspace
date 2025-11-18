@@ -398,8 +398,8 @@ function openEmployeeProfile(employeeId) {
             profileDetails.appendChild(datesItem);
         }
     }
-
-        const experiencesList = document.getElementById('profileExperiences');
+    
+    const experiencesList = document.getElementById('profileExperiences');
     experiencesList.innerHTML = '';
     
     if (employee.experiences && employee.experiences.length > 0) {
