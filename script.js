@@ -352,3 +352,49 @@ function removeFromRoom(employeeId, event) {
         loadEmployees();
     }
 }
+
+// Ouvrir le profil d'un employé
+function openEmployeeProfile(employeeId) {
+    const employee = employees.find(emp => emp.id === employeeId);
+    if (!employee) return;
+    
+    document.getElementById('profileName').textContent = employee.name;
+    document.getElementById('profileRole').textContent = employee.role;
+    document.getElementById('profileLocation').textContent = `Currently in: ${employee.location}`;
+    document.getElementById('profileEmail').textContent = employee.email || 'Not specified';
+    document.getElementById('profilePhone').textContent = employee.phone || 'Not specified';
+    
+    const profilePhoto = document.getElementById('profilePhoto');
+    updatePhotoPreview(profilePhoto, employee.photo);
+    
+    // Afficher les dates
+    const profileDetails = document.querySelector('.profile-details');
+    
+    // Supprimer les anciennes dates s'il y en a
+    const existingDates = document.querySelectorAll('.dates-item');
+    existingDates.forEach(date => date.remove());
+    
+    // Ajouter les dates si elles existent
+    if (employee.startDate || employee.endDate) {
+        const datesItem = document.createElement('div');
+        datesItem.className = 'dates-item';
+        
+        const startDate = employee.startDate ? new Date(employee.startDate).toLocaleDateString() : 'Not specified';
+        const endDate = employee.endDate ? new Date(employee.endDate).toLocaleDateString() : 'Present';
+        
+        datesItem.innerHTML = `
+            <i class="fas fa-calendar-alt"></i>
+            <div class="date-range">
+                <span>Employment Period:</span>
+                ${startDate} - ${endDate}
+            </div>
+        `;
+        
+        // Insérer après les détails existants
+        const existingDetails = profileDetails.querySelector('.detail-item:last-child');
+        if (existingDetails) {
+            existingDetails.parentNode.insertBefore(datesItem, existingDetails.nextSibling);
+        } else {
+            profileDetails.appendChild(datesItem);
+        }
+    }
