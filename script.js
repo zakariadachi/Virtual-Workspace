@@ -398,3 +398,23 @@ function openEmployeeProfile(employeeId) {
             profileDetails.appendChild(datesItem);
         }
     }
+
+        const experiencesList = document.getElementById('profileExperiences');
+    experiencesList.innerHTML = '';
+    
+    if (employee.experiences && employee.experiences.length > 0) {
+        employee.experiences.forEach(exp => {
+            const li = document.createElement('li');
+            li.textContent = exp;
+            experiencesList.appendChild(li);
+        });
+    } else {
+        const li = document.createElement('li');
+        li.textContent = 'No experiences listed';
+        li.style.color = '#999';
+        li.style.fontStyle = 'italic';
+        experiencesList.appendChild(li);
+    }
+    
+    employeeProfileModal.classList.add('show');
+}
