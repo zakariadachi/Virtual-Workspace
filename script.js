@@ -418,3 +418,68 @@ function openEmployeeProfile(employeeId) {
     
     employeeProfileModal.classList.add('show');
 }
+
+// Sauvegarder dans le localStorage
+function saveToLocalStorage() {
+    localStorage.setItem('employees', JSON.stringify(employees));
+    localStorage.setItem('nextId', nextId.toString());
+}
+
+// Charger les données exemple
+function loadSampleData() {
+    employees = [
+        {
+            id: 1,
+            name: "John Doe",
+            role: "Manager",
+            photo: "",
+            startDate: "2022-01-15",
+            endDate: "",
+            email: "john.doe@company.com",
+            phone: "+1 555-0101",
+            experiences: ["Project Manager at TechCorp (2018-2020)", "Team Lead at Startup Inc (2015-2018)"],
+            location: "Unassigned"
+        },
+        {
+            id: 2,
+            name: "Jane Smith",
+            role: "Receptionist",
+            photo: "",
+            startDate: "2023-03-01",
+            endDate: "",
+            email: "jane.smith@company.com",
+            phone: "+1 555-0102",
+            experiences: ["Receptionist at Business Center (2019-2021)"],
+            location: "Unassigned"
+        },
+        {
+            id: 3,
+            name: "Mike Johnson",
+            role: "IT Technician",
+            photo: "",
+            startDate: "2021-06-10",
+            endDate: "2023-12-31",
+            email: "mike.johnson@company.com",
+            phone: "+1 555-0103",
+            experiences: ["System Administrator at DataSystems (2020-2022)"],
+            location: "Unassigned"
+        },
+        {
+            id: 4,
+            name: "Sarah Wilson",
+            role: "Security Agent",
+            photo: "",
+            startDate: "2023-02-20",
+            endDate: "",
+            email: "sarah.wilson@company.com",
+            phone: "+1 555-0104",
+            experiences: ["Security Officer at SecureCorp (2019-2021)"],
+            location: "Unassigned"
+        }
+    ];
+    nextId = 5;
+    saveToLocalStorage();
+    loadEmployees();
+}
+
+console.log('Office Management System initialized successfully!');
