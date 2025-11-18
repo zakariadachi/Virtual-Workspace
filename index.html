@@ -127,6 +127,39 @@
     </div>
   </div>
 
+  <!-- Modale Profil Employé -->
+  <div class="modal" id="employeeProfileModal">
+    <div class="modal-dialog profile-dialog">
+      <div class="profile-header">
+        <div class="profile-photo" id="profilePhoto">
+          <i class="fas fa-user"></i>
+        </div>
+        <div class="profile-info">
+          <h2 id="profileName"></h2>
+          <p id="profileRole"></p>
+          <p id="profileLocation"></p>
+        </div>
+        <button class="close-profile-btn" id="closeProfileBtn"><i class="fas fa-times"></i></button>
+      </div>
+      
+      <div class="profile-details">
+        <div class="detail-item">
+          <i class="fas fa-envelope"></i>
+          <span id="profileEmail"></span>
+        </div>
+        <div class="detail-item">
+          <i class="fas fa-phone"></i>
+          <span id="profilePhone"></span>
+        </div>
+      </div>
+      
+      <div class="profile-experiences">
+        <h3>Professional Experiences</h3>
+        <ul id="profileExperiences"></ul>
+      </div>
+    </div>
+  </div>
+
   <script src="script.js"></script>
 </body>
 </html>
