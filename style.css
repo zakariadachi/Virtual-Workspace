@@ -595,3 +595,76 @@ body {
 .date-range span {
   font-weight: 500;
 }
+
+profile-experiences h3 {
+  margin-bottom: 1rem;
+  color: var(--primary);
+}
+
+.profile-experiences ul {
+  list-style: none;
+}
+
+.profile-experiences li {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.profile-experiences li:last-child {
+  border-bottom: none;
+}
+
+.experiences-list {
+  margin-bottom: 1rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .main-layout {
+    flex-direction: column;
+  }
+  
+  .sidebar {
+    min-width: 100%;
+    max-width: 100%;
+    border-radius: 0;
+  }
+  
+  .plan-grid {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    aspect-ratio: auto;
+    gap: 15px;
+    padding: 15px;
+  }
+  
+  .room1 { grid-column: 1 / 2; grid-row: 1 / 2; }
+  .room2 { grid-column: 2 / 3; grid-row: 1 / 2; }
+  .room3 { grid-column: 1 / 2; grid-row: 2 / 3; }
+  .room4 { grid-column: 2 / 3; grid-row: 2 / 3; }
+  .room5 { grid-column: 1 / 2; grid-row: 3 / 4; }
+  .room6 { grid-column: 2 / 3; grid-row: 3 / 4; }
+  
+  .profile-header {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .modal-dialog {
+    padding: 1rem;
+  }
+  
+  .photo-preview-container {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .form-row {
+    flex-direction: column;
+    gap: 0;
+  }
+  
+  .form-row .form-group {
+    margin-bottom: 1.2rem;
+  }
+}
