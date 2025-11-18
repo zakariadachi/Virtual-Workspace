@@ -201,3 +201,28 @@ function updateStaffList() {
         staffList.appendChild(staffItem);
     });
 }
+
+function createStaffElement(employee) {
+    const staffItem = document.createElement('div');
+    staffItem.className = 'staff-item';
+    staffItem.dataset.id = employee.id;
+    
+    staffItem.innerHTML = `
+        <div class="staff-avatar">
+            ${employee.photo ? 
+                `<img src="${employee.photo}" alt="${employee.name}" onerror="handleImageError(this)">` : 
+                '<i class="fas fa-user"></i>'
+            }
+        </div>
+        <div class="staff-info">
+            <h4>${employee.name}</h4>
+            <p>${employee.role}</p>
+        </div>
+    `;
+    
+    staffItem.addEventListener('click', () => {
+        openEmployeeProfile(employee.id);
+    });
+    
+    return staffItem;
+}
