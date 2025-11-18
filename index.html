@@ -3,29 +3,57 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Grid sur Plan d'Étage avec Sidebar Postes</title>
+  <title>Office Management System</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap">
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
   <div class="main-layout">
-    <aside class="sidebar-postes">
-      <h2> Employees</h2>
-      <button class="add-post-btn" id="addPostBtn"><i class="fas fa-plus"></i> Ajouter un employee</button>
-    </aside>
-    <div class="floorplan-area">
-      <div class="floorplan-grid">
-        <img src="590d32ea-316d-43c6-a8b0-f0c961fdef06.jpg" alt="Plan d'étage" class="floor-image">
-        <button class="room-add-btn" id="btn-room1" style="grid-area: room1;"><i class="fa fa-plus"></i></button>
-        <button class="room-add-btn" id="btn-room2" style="grid-area: room2;"><i class="fas fa-plus"></i></button>
-        <button class="room-add-btn" id="btn-room3" style="grid-area: room3;"><i class="fas fa-plus"></i></button>
-        <button class="room-add-btn" id="btn-room4" style="grid-area: room4;"><i class="fas fa-plus"></i></button>
-        <button class="room-add-btn" id="btn-room5" style="grid-area: room5;"><i class="fas fa-plus"></i></button>
-        <button class="room-add-btn" id="btn-room6" style="grid-area: room6;"><i class="fas fa-plus"></i></button>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <h2><i class="fas fa-users"></i> Unassigned Staff</h2>
+        <button class="add-worker-btn" id="addWorkerBtn">
+          <i class="fas fa-plus"></i> Add New Worker
+        </button>
       </div>
-    </div>
+      <div class="staff-list" id="staffList">
+        <!-- Employés non assignés dynamiques -->
+      </div>
+    </aside>
+
+    <!-- Zone principale -->
+    <main class="main-content">
+      <div class="plan-grid">
+        <div class="room room1" id="room1" data-room="Conference Room">
+          <button class="add-to-room-btn" data-room="room1"><i class="fas fa-plus"></i></button>
+          <div class="assigned-staff" id="staffRoom1"></div>
+        </div>
+        <div class="room room2" id="room2" data-room="Reception">
+          <button class="add-to-room-btn" data-room="room2"><i class="fas fa-plus"></i></button>
+          <div class="assigned-staff" id="staffRoom2"></div>
+        </div>
+        <div class="room room3" id="room3" data-room="Server Room">
+          <button class="add-to-room-btn" data-room="room3"><i class="fas fa-plus"></i></button>
+          <div class="assigned-staff" id="staffRoom3"></div>
+        </div>
+        <div class="room room4" id="room4" data-room="Security Room">
+          <button class="add-to-room-btn" data-room="room4"><i class="fas fa-plus"></i></button>
+          <div class="assigned-staff" id="staffRoom4"></div>
+        </div>
+        <div class="room room5" id="room5" data-room="Staff Room">
+          <button class="add-to-room-btn" data-room="room5"><i class="fas fa-plus"></i></button>
+          <div class="assigned-staff" id="staffRoom5"></div>
+        </div>
+        <div class="room room6" id="room6" data-room="Archive Room">
+          <button class="add-to-room-btn" data-room="room6"><i class="fas fa-plus"></i></button>
+          <div class="assigned-staff" id="staffRoom6"></div>
+        </div>
+      </div>
+    </main>
   </div>
+
   <!-- Modale Employé -->
   <!-- <div class="modal" id="addEmployeeModal">
     <div class="modal-dialog">
