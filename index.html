@@ -54,38 +54,79 @@
     </main>
   </div>
 
-  <!-- Modale Employé -->
-  <!-- <div class="modal" id="addEmployeeModal">
+  <!-- Modale Ajout Employé -->
+  <div class="modal" id="addEmployeeModal">
     <div class="modal-dialog">
       <form id="addEmployeeForm">
-        <h2>Ajouter un employé</h2>
-        <label>Nom
-          <input type="text" name="nom" required>
-        </label>
-        <label>Rôle
-          <input type="text" name="role" required>
-        </label>
-        <label>Photo (URL)
-          <input type="url" name="photo">
-        </label>
-        <label>Email
-          <input type="email" name="email">
-        </label>
-        <label>Téléphone
-          <input type="tel" name="telephone">
-        </label>
-        <div class="experiences-section">
-          <label>Expériences professionnelles</label>
-          <div id="experiencesList"></div>
-          <button type="button" class="add-exp-btn" id="addExpBtn"><i class="fas fa-plus"></i> Ajouter une expérience</button>
+        <h2>Add New Employee</h2>
+        
+        <div class="form-group">
+          <label>Name *</label>
+          <input type="text" name="name" required>
         </div>
+        
+        <div class="form-group">
+          <label>Role *</label>
+          <select name="role" required>
+            <option value="">Select a role</option>
+            <option value="Receptionist">Receptionist</option>
+            <option value="IT Technician">IT Technician</option>
+            <option value="Security Agent">Security Agent</option>
+            <option value="Manager">Manager</option>
+            <option value="Cleaner">Cleaner</option>
+            <option value="Developer">Developer</option>
+            <option value="Designer">Designer</option>
+            <option value="Analyst">Analyst</option>
+          </select>
+        </div>
+        
+        <div class="form-group photo-group">
+          <label>Photo (URL)</label>
+          <div class="photo-preview-container">
+            <div class="photo-preview" id="photoPreview">
+              <i class="fas fa-user"></i>
+            </div>
+            <input type="url" name="photo" id="photoInput" placeholder="https://example.com/photo.jpg">
+          </div>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label>Start Date</label>
+            <input type="date" name="startDate" id="startDate">
+          </div>
+          <div class="form-group">
+            <label>End Date</label>
+            <input type="date" name="endDate" id="endDate">
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" name="email">
+        </div>
+        
+        <div class="form-group">
+          <label>Phone</label>
+          <input type="tel" name="phone">
+        </div>
+        
+        <div class="experiences-section">
+          <label>Professional Experiences</label>
+          <div id="experiencesList" class="experiences-list"></div>
+          <button type="button" class="add-exp-btn" id="addExpBtn">
+            <i class="fas fa-plus"></i> Add Experience
+          </button>
+        </div>
+        
         <div class="modal-actions">
-          <button type="submit" class="success">Enregistrer</button>
-          <button type="button" class="danger" id="closeModalBtn">Annuler</button>
+          <button type="submit" class="btn-success">Save</button>
+          <button type="button" class="btn-danger" id="closeModalBtn">Cancel</button>
         </div>
       </form>
-    </div> -->
+    </div>
   </div>
+
   <script src="script.js"></script>
 </body>
 </html>
