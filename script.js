@@ -226,3 +226,129 @@ function createStaffElement(employee) {
     
     return staffItem;
 }
+
+// Mettre à jour l'affichage des salles
+function updateRooms() {
+    for (let i = 1; i <= 6; i++) {
+        const roomElement = document.getElementById(`room${i}`);
+        const staffContainer = document.getElementById(`staffRoom${i}`);
+        
+        if (!roomElement || !staffContainer) {
+            console.warn(`Room elements for room${i} not found`);
+            continue;
+        }
+        
+        const roomName = roomElement.dataset.room;
+        staffContainer.innerHTML = '';
+        
+        const roomEmployees = employees.filter(emp => emp.location === roomName);
+        
+        roomEmployees.forEach(employee => {
+            const assignedStaff = createAssignedStaffElement(employee);
+            staffContainer.appendChild(assignedStaff);
+        });
+    }
+}
+
+function createAssignedStaffElement(employee) {
+    const assignedStaff = document.createElement('div');
+    assignedStaff.className = 'staff-item';
+    assignedStaff.dataset.id = employee.id;
+    
+    assignedStaff.innerHTML = `
+        <div class="staff-avatar">
+            ${employee.photo ? 
+                `<img src="${employee.photo}" alt="${employee.name}" onerror="handleImageError(this)">` : 
+                '<i class="fas fa-user"></i>'
+            }
+        </div>
+        <div class="staff-info">
+            <h4>${employee.name}</h4>
+            <p>${employee.role}</p>
+        </div>
+        <button class="remove-staff-btn" onclick="removeFromRoom(${employee.id}, event)">
+            <i class="fas fa-times"></i>
+        </button>
+    `;
+    
+    assignedStaff.addEventListener('click', (e) => {
+        if (!e.target.closest('.remove-staff-btn')) {
+            openEmployeeProfile(employee.id);
+        }
+    });
+    
+    return assignedStaff;
+}
+
+// Ouvrir l'assignation à une salle
+function openRoomAssignment(roomId) {
+    const roomElement = document.getElementById(roomId);
+    if (!roomElement) {
+        console.error(`Room element with id ${roomId} not found`);
+        return;
+    }
+    
+    const roomName = roomElement.dataset.room;
+    const unassignedEmployees = employees.filter(emp => emp.location === 'Unassigned');
+    
+    if (unassignedEmployees.length === 0) {
+        alert('No unassigned employees available.');
+        return;
+    }
+    
+    // Créer une interface de sélection
+    let employeeList = 'Available employees:\n\n';
+    unassignedEmployees.forEach((emp, index) => {
+        employeeList += `${index + 1}. ${emp.name} (${emp.role})\n`;
+    });
+    
+    employeeList += '\nEnter the number or name of the employee:';
+    
+    const userInput = prompt(employeeList);
+    
+    if (!userInput) return;
+    
+    let selectedEmployee;
+    
+    // Vérifier si l'utilisateur a entré un numéro
+    const inputNumber = parseInt(userInput);
+    if (!isNaN(inputNumber) && inputNumber >= 1 && inputNumber <= unassignedEmployees.length) {
+        selectedEmployee = unassignedEmployees[inputNumber - 1];
+    } else {
+        // Chercher par nom
+        selectedEmployee = unassignedEmployees.find(emp => 
+            emp.name.toLowerCase().includes(userInput.toLowerCase())
+        );
+    }
+    
+    if (selectedEmployee) {
+        if (canAssignToRoom(selectedEmployee.role, roomName)) {
+            selectedEmployee.location = roomName;
+            saveToLocalStorage();
+            loadEmployees();
+            alert(`✅ ${selectedEmployee.name} assigned to ${roomName}`);
+        } else {
+            const allowedRoles = roomRestrictions[roomName]?.join(', ') || 'All roles';
+            alert(`❌ ${selectedEmployee.role} cannot be assigned to ${roomName}\n\nAllowed roles: ${allowedRoles}`);
+        }
+    } else {
+        alert('Employee not found. Please check the name/number and try again.');
+    }
+}
+
+// Vérifier si un rôle peut être assigné à une salle
+function canAssignToRoom(role, room) {
+    if (!roomRestrictions[room]) return true;
+    return roomRestrictions[room].includes(role);
+}
+
+// Retirer un employé d'une salle
+function removeFromRoom(employeeId, event) {
+    if (event) event.stopPropagation();
+    const employee = employees.find(emp => emp.id === employeeId);
+    if (employee) {
+        employee.location = 'Unassigned';
+        saveToLocalStorage();
+        loadEmployees();
+    }
+}
