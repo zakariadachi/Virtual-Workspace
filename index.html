@@ -30,15 +30,15 @@
           <button class="add-to-room-btn" data-room="room1"><i class="fas fa-plus"></i></button>
           <div class="assigned-staff" id="staffRoom1"></div>
         </div>
-        <div class="room room2" id="room2" data-room="Reception">
+        <div class="room room2" id="room2" data-room="Archive Room">
           <button class="add-to-room-btn" data-room="room2"><i class="fas fa-plus"></i></button>
           <div class="assigned-staff" id="staffRoom2"></div>
         </div>
-        <div class="room room3" id="room3" data-room="Server Room">
+        <div class="room room3" id="room3" data-room="Security Room">
           <button class="add-to-room-btn" data-room="room3"><i class="fas fa-plus"></i></button>
           <div class="assigned-staff" id="staffRoom3"></div>
         </div>
-        <div class="room room4" id="room4" data-room="Security Room">
+        <div class="room room4" id="room4" data-room="Reception">
           <button class="add-to-room-btn" data-room="room4"><i class="fas fa-plus"></i></button>
           <div class="assigned-staff" id="staffRoom4"></div>
         </div>
@@ -46,7 +46,7 @@
           <button class="add-to-room-btn" data-room="room5"><i class="fas fa-plus"></i></button>
           <div class="assigned-staff" id="staffRoom5"></div>
         </div>
-        <div class="room room6" id="room6" data-room="Archive Room">
+        <div class="room room6" id="room6" data-room="Server Room">
           <button class="add-to-room-btn" data-room="room6"><i class="fas fa-plus"></i></button>
           <div class="assigned-staff" id="staffRoom6"></div>
         </div>
@@ -57,61 +57,71 @@
   <!-- Modale Ajout Employé -->
   <div class="modal" id="addEmployeeModal">
     <div class="modal-dialog">
-      <form id="addEmployeeForm">
+      <form id="addEmployeeForm" class="addForm flex flex-col gap-4">
         <h2>Add New Employee</h2>
         
         <div class="form-group">
-          <label>Name *</label>
-          <input type="text" name="name" required>
+          <label class="font-semibold text-gray-700">Name *</label>
+          <input type="text" id="name" name="name" class="p-2 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition" required>
+          <div id="name-error" class="error-message"></div>
         </div>
         
         <div class="form-group">
-          <label>Role *</label>
-          <select name="role" required>
+          <label class="font-semibold text-gray-700">Role *</label>
+          <select id="role" name="role" class="p-2 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition" required>
             <option value="">Select a role</option>
-            <option value="Receptionist">Receptionist</option>
-            <option value="IT Technician">IT Technician</option>
-            <option value="Security Agent">Security Agent</option>
+            <option value="Réceptionniste">Réceptionniste</option>
+            <option value="Technicien IT">Technicien IT</option>
+            <option value="Agent de sécurité">Agent de sécurité</option>
             <option value="Manager">Manager</option>
-            <option value="Cleaner">Cleaner</option>
-            <option value="Analyst">autre</option>
+            <option value="Nettoyage">Nettoyage</option>
           </select>
         </div>
         
         <div class="form-group photo-group">
-          <label>Photo (URL)</label>
+          <label class="font-semibold text-gray-700">Photo (URL)</label>
           <div class="photo-preview-container">
             <div class="photo-preview" id="photoPreview">
               <i class="fas fa-user"></i>
             </div>
             <input type="url" name="photo" id="photoInput" placeholder="https://example.com/photo.jpg">
           </div>
+          <div id="photo-error" class="error-message"></div>
         </div>
-        
-        <div class="form-row">
-          <div class="form-group">
-            <label>Start Date</label>
-            <input type="date" name="startDate" id="startDate">
-          </div>
-          <div class="form-group">
-            <label>End Date</label>
-            <input type="date" name="endDate" id="endDate">
-          </div>
+        <div class="form-group">
+          <label class="font-semibold text-gray-700">Email</label>
+          <input type="email" name="email" id="email" placeholder="exemple@mail.com" class="p-2 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition">
+          <div id="email-error" class="error-message"></div>
         </div>
         
         <div class="form-group">
-          <label>Email</label>
-          <input type="email" name="email">
-        </div>
-        
-        <div class="form-group">
-          <label>Phone</label>
-          <input type="tel" name="phone">
+          <label class="font-semibold text-gray-700">Phone</label>
+          <input type="tel" name="phone" id="phone" class="p-2 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition">
+          <div id="phone-error" class="error-message"></div>
         </div>
         
         <div class="experiences-section">
-          <label>Professional Experiences</label>
-          <div id="experiencesList" class="experiences-list"></div>
+          <label class="font-semibold text-black text-xl mt-2">Professional Experiences</label>
+          <div id="experiencesList" class="experiences-list flex flex-col gap-3">
+            <div class="experience-item flex flex-col p-3 rounded-lg border border-gray-300 bg-gray-50">
+              <label class="font-semibold text-gray-700">Company</label>
+              <input type="text" class="exp-company p-1 border rounded mb-2 text-black">
+              
+              <label class="font-semibold text-gray-700">Post</label>
+              <input type="text" class="exp-position p-1 border rounded mb-2 text-black">
+              
+              <div class="flex gap-2 text-black">
+                <div class="w-1/2">
+                  <label class="font-semibold text-gray-700">From</label>
+                  <input type="date" class="exp-from w-full p-1 border rounded text-black">
+                </div>
+                <div class="w-1/2">
+                  <label class="font-semibold text-gray-700">To</label>
+                  <input type="date" class="exp-to w-full p-1 border rounded text-black">
+                </div>
+              </div>
+            </div>
+          </div>
           <button type="button" class="add-exp-btn" id="addExpBtn">
             <i class="fas fa-plus"></i> Add Experience
           </button>
