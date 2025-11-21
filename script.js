@@ -35,15 +35,15 @@ function initializeApp() {
     addExperience();
     
     // Événements des boutons d'ajout aux salles
-    document.querySelectorAll('.add-to-room-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            const roomId = e.currentTarget.dataset.room;
-            if (roomId) {
-                openRoomAssignment(roomId);
-            }
-        });
-    });
+    // document.querySelectorAll('.add-to-room-btn').forEach(btn => {
+    //     btn.addEventListener('click', (e) => {
+    //         e.stopPropagation();
+    //         const roomId = e.currentTarget.dataset.room;
+    //         if (roomId) {
+    //             openRoomAssignment(roomId);
+    //         }
+    //     });
+    // });
     
     // Validation des dates
     document.getElementById('startDate').addEventListener('change', validateDates);
@@ -452,32 +452,9 @@ function loadSampleData() {
             experiences: ["Receptionist at Business Center (2019-2021)"],
             location: "Unassigned"
         },
-        {
-            id: 3,
-            name: "Mike Johnson",
-            role: "IT Technician",
-            photo: "",
-            startDate: "2021-06-10",
-            endDate: "2023-12-31",
-            email: "mike.johnson@company.com",
-            phone: "+1 555-0103",
-            experiences: ["System Administrator at DataSystems (2020-2022)"],
-            location: "Unassigned"
-        },
-        {
-            id: 4,
-            name: "Sarah Wilson",
-            role: "Security Agent",
-            photo: "",
-            startDate: "2023-02-20",
-            endDate: "",
-            email: "sarah.wilson@company.com",
-            phone: "+1 555-0104",
-            experiences: ["Security Officer at SecureCorp (2019-2021)"],
-            location: "Unassigned"
-        }
+        
     ];
-    nextId = 5;
+    nextId = 3;
     saveToLocalStorage();
     loadEmployees();
 }
