@@ -288,7 +288,7 @@ body {
   border-radius: var(--radius);
   padding: 2rem;
   width: 90%;
-  max-width: 500px;
+  max-width: 700px;
   max-height: 90vh;
   overflow-y: auto;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
@@ -404,13 +404,16 @@ body {
 
 .experience-item {
   display: flex;
+  flex-direction: column;
   gap: 0.5rem;
   margin-bottom: 0.8rem;
-  align-items: center;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--light);
 }
 
 .experience-item input {
-  flex: 1;
   padding: 0.6rem;
   border: 2px solid var(--border);
   border-radius: 6px;
@@ -429,6 +432,8 @@ body {
   justify-content: center;
   transition: background 0.3s;
   flex-shrink: 0;
+  align-self: flex-end;
+  margin-top: 0.5rem;
 }
 
 .remove-exp-btn:hover {
@@ -448,6 +453,8 @@ body {
   gap: 0.5rem;
   margin-top: 0.5rem;
   transition: background 0.3s;
+  width: 100%;
+  justify-content: center;
 }
 
 .add-exp-btn:hover {
@@ -617,6 +624,116 @@ body {
   margin-bottom: 1rem;
 }
 
+/* Validation styles */
+.error {
+  border-color: #ef4444 !important;
+}
+
+.success {
+  border-color: #10b981 !important;
+}
+
+.error-message {
+  color: #ef4444;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+.success-message {
+  color: #10b981;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+/* Flex utilities */
+.flex {
+  display: flex;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.gap-4 {
+  gap: 1rem;
+}
+
+.gap-3 {
+  gap: 0.75rem;
+}
+
+.gap-2 {
+  gap: 0.5rem;
+}
+
+.p-2 {
+  padding: 0.5rem;
+}
+
+.p-1 {
+  padding: 0.25rem;
+}
+
+.p-3 {
+  padding: 0.75rem;
+}
+
+.p-8 {
+  padding: 2rem;
+}
+
+.mb-2 {
+  margin-bottom: 0.5rem;
+}
+
+.mt-2 {
+  margin-top: 0.5rem;
+}
+
+.w-full {
+  width: 100%;
+}
+
+.w-1\/2 {
+  width: 50%;
+}
+
+.rounded-lg {
+  border-radius: 0.5rem;
+}
+
+.rounded {
+  border-radius: 0.25rem;
+}
+
+.border {
+  border-width: 1px;
+}
+
+.border-gray-300 {
+  border-color: #d1d5db;
+}
+
+.bg-gray-50 {
+  background-color: #f9fafb;
+}
+
+.text-black {
+  color: #000;
+}
+
+.text-gray-700 {
+  color: #374151;
+}
+
+.text-xl {
+  font-size: 1.25rem;
+}
+
+.font-semibold {
+  font-weight: 600;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .main-layout {
@@ -666,4 +783,62 @@ body {
   .form-row .form-group {
     margin-bottom: 1.2rem;
   }
+}
+
+
+/* Styles de validation */
+.error {
+    border-color: #ef4444 !important;
+    background-color: #fef2f2;
+}
+
+.success {
+    border-color: #10b981 !important;
+    background-color: #f0fdf4;
+}
+
+.error-message {
+    color: #ef4444;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+    font-weight: 500;
+}
+
+.success-message {
+    color: #10b981;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+    font-weight: 500;
+}
+
+/* Styles pour les champs de formulaire */
+.form-group input:focus.error,
+.form-group select:focus.error {
+    border-color: #ef4444;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+.form-group input:focus.success,
+.form-group select:focus.success {
+    border-color: #10b981;
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+}
+
+/* Animation pour les messages de validation */
+.error-message, .success-message {
+    animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Style pour les expériences */
+.experience-item .error {
+    border-color: #ef4444;
+}
+
+.experience-item .success {
+    border-color: #10b981;
 }
