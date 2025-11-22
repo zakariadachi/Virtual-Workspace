@@ -3,7 +3,7 @@ let employees = [
     {
         id: 1,
         name: "Alice Martin",
-        role: "Réceptionniste",
+        role: "Manager",
         location: "Unassigned",
         photo: "",
         email: "alice.martin@email.com",
