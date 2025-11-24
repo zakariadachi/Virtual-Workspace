@@ -54,7 +54,6 @@ document.addEventListener('DOMContentLoaded', function() {
 function initApp() {
     loadEmployees();
     setupEventListeners();
-    addNotificationStyles();
 }
 
 // Configuration des écouteurs d'événements
@@ -90,13 +89,6 @@ function setupEventListeners() {
     if (addEmployeeForm) {
         addEmployeeForm.addEventListener('submit', handleAddEmployee);
     }
-
-    // Prévisualisation photo
-    const photoInput = document.getElementById('photoInput');
-    if (photoInput) {
-        photoInput.addEventListener('input', updatePhotoPreview);
-    }
-
     // Bouton d'ajout d'expérience
     const addExpBtn = document.getElementById('addExpBtn');
     if (addExpBtn) {
@@ -180,7 +172,7 @@ function loadAssignedStaff() {
     for (let i = 1; i <= 6; i++) {
         const staffRoom = document.getElementById(`staffRoom${i}`);
         all_roms_ids.push(staffRoom.id)
-        let conference=document.getElementById("room1"), reception=document.getElementById("room4");
+        let conference=document.getElementById("room1"), reception=document.getElementById("room5");
         if(staffRoom.parentElement!=conference && staffRoom.parentElement!=reception){
                     
             for(e of employees){           
@@ -189,10 +181,7 @@ function loadAssignedStaff() {
             }
 
         }
-        }
-        
-
-       
+        } 
     }
 
     for(r of all_roms_ids){
@@ -290,12 +279,7 @@ function showEmployeeAssignmentModal(roomName) {
         const employeesListContainer = modal.querySelector('#employeesList');
         
         if (employeesList.length === 0) {
-            employeesListContainer.innerHTML = `
-                <div class="no-employees" style="text-align: center; padding: 40px; color: #666;">
-                    <p>Aucun employé disponible pour cette salle</p>
-                    <small>Rôles autorisés: ${getAllowedRoles(roomName)}</small>
-                </div>
-            `;
+            modal.style.display="none"
             return;
         }
         
@@ -345,7 +329,6 @@ function assignEmployeeToRoom(employeeId, roomName) {
     const employee = employees.find(emp => emp.id === employeeId);
     
     if (!employee) {
-        showNotification('Employé non trouvé', 'error');
         return;
     }
     
@@ -357,13 +340,6 @@ function assignEmployeeToRoom(employeeId, roomName) {
         document.querySelectorAll('.assignment-modal').forEach(modal => {
             modal.remove();
         });
-        
-        showNotification(`✅ ${employee.name} assigné à ${roomName}`, 'success');
-    } else {
-        showNotification(
-            `❌ ${employee.role} ne peut pas être assigné à ${roomName}`,
-            'error'
-        );
     }
 }
 
@@ -373,7 +349,6 @@ function removeFromRoom(employeeId) {
     if (employee) {
         employee.location = 'Unassigned';
         loadEmployees();
-        showNotification(`✅ ${employee.name} retiré de la salle`, 'success');
     }
 }
 
@@ -398,9 +373,6 @@ function hideAddEmployeeModal() {
         modal.classList.remove('show');
         // Réinitialiser le formulaire
         document.getElementById('addEmployeeForm').reset();
-        // Réinitialiser la prévisualisation photo
-        updatePhotoPreview();
-        // Réinitialiser les expériences
         resetExperienceFields();
     }
 }
@@ -472,7 +444,6 @@ function handleAddEmployee(e) {
     employees.push(newEmployee);
     loadEmployees();
     hideAddEmployeeModal();
-    showNotification(`✅ ${newEmployee.name} ajouté avec succès`, 'success');
 }
 
 // Génération d'ID
@@ -555,72 +526,3 @@ function getExperiencesFromForm() {
     
     return experiences;
 }
-
-// Prévisualisation photo
-function updatePhotoPreview() {
-    const photoInput = document.getElementById('photoInput');
-    const photoPreview = document.getElementById('photoPreview');
-    
-    if (photoInput && photoPreview) {
-        if (photoInput.value) {
-            photoPreview.innerHTML = `<img src="${photoInput.value}" alt="Preview" onerror="this.style.display='none'; this.parentElement.innerHTML='<i class=\\'fas fa-user\\'></i>'">`;
-        } else {
-            photoPreview.innerHTML = '<i class="fas fa-user"></i>';
-        }
-    }
-}
-
-// Formatage des dates
-function formatDate(dateString) {
-    if (!dateString || dateString === 'Present') return 'Present';
-    const date = new Date(dateString);
-    return date.toLocaleDateString('fr-FR');
-}
-
-// Système de notifications
-function showNotification(message, type = 'info') {
-    // Créer une notification toast
-    const notification = document.createElement('div');
-    notification.className = `notification ${type}`;
-    notification.textContent = message;
-    
-    // Styles pour la notification
-    notification.style.cssText = `
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        padding: 15px 20px;
-        border-radius: 5px;
-        color: white;
-        font-weight: bold;
-        z-index: 10000;
-        max-width: 300px;
-        word-wrap: break-word;
-        background: ${type === 'success' ? '#4CAF50' : type === 'error' ? '#f44336' : '#2196F3'};
-        animation: slideIn 0.3s ease;
-    `;
-    
-    document.body.appendChild(notification);
-    
-    // Auto-supprimer après 3 secondes
-    setTimeout(() => {
-        if (notification.parentNode) {
-            notification.remove();
-        }
-    }, 3000);
-}
-
-function addNotificationStyles() {
-    if (document.querySelector('#notification-styles')) return;
-    
-    const style = document.createElement('style');
-    style.id = 'notification-styles';
-    style.textContent = `
-        @keyframes slideIn {
-            from { transform: translateX(100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-    `;
-    document.head.appendChild(style);
-}
-
