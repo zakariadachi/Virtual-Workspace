@@ -631,9 +631,7 @@ function validateAddEmployeeForm() {
     const name = document.getElementById('name').value.trim();
     const email = document.getElementById('email').value.trim();
     const phone = document.getElementById('phone').value.trim();
-    
-    // Reset previous errors
-    clearValidationErrors();
+        clearValidationErrors();
     
     let isValid = true;
 
@@ -642,8 +640,6 @@ function validateAddEmployeeForm() {
         email: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{3,}$/,
         phone: /^\+212\s[6-7]\d{2}\s?\d{2}\s?\d{2}\s?\d{2}\s?$/
     };
-    
-    // Validation du nom
     if (name === '') {
         showError('name', 'Le nom est obligatoire');
         isValid = false;
@@ -651,16 +647,12 @@ function validateAddEmployeeForm() {
         showError('name', 'Le nom doit contenir entre 2 et 50 caractères (lettres, espaces, traits d\'union)');
         isValid = false;
     }
-    
-    // Validation de l'email
     if (email !== '') {
         if (!regex.email.test(email)) {
             showError('email', 'Format d\'email invalide (ex: exemple@domaine.com)');
             isValid = false;
         }
     }
-    
-    // Validation du téléphone
     if (phone !== '') {
         if (!regex.phone.test(phone)) {
             showError('phone','Format de téléphone invalide (ex: +212 612-345-678)');
@@ -689,7 +681,6 @@ function showError(fieldId, message) {
 }
 
 function clearValidationErrors() {
-    // Supprimer tous les messages d'erreur
     const errorMessages = document.querySelectorAll('.error-message');
     for (let i = 0; i < errorMessages.length; i++) {
         errorMessages[i].remove();
