@@ -38,11 +38,11 @@ let employees = [
 let all_roms_ids=[]
 // Restrictions par salle
 const roomRestrictions = {
-    "Conference Room": ["Manager", "Réceptionniste", "Technicien IT", "Agent de sécurité", "Nettoyage","other"],
+    "Conference Room": ["Manager", "Réceptionniste", "Technicien IT", "Agent de sécurité", "Nettoyage"],
     "Reception": ["Réceptionniste","Manager","Nettoyage"],
     "Server Room": ["Nettoyage","Technicien IT","Manager"],
     "Security Room": ["Agent de sécurité","Manager","Nettoyage"],
-    "Staff Room": ["Manager", "Réceptionniste", "Technicien IT", "Agent de sécurité", "Nettoyage","other"],
+    "Staff Room": ["Manager", "Réceptionniste", "Technicien IT", "Agent de sécurité", "Nettoyage"],
     "Archive Room": ["Manager"],
 };
 
@@ -253,7 +253,7 @@ function showEmployeeAssignmentModal(roomName) {
             </div>
             <div class="modal-body" style="padding: 20px; flex: 1; overflow-y: auto;">
                 <div class="employees-list" id="employeesList" style="display: flex; flex-direction: column; gap: 10px;">
-                    <!-- Liste des employés sera générée ici -->
+                <!-- Liste des employés sera générée ici -->
                 </div>
             </div>
             <div class="modal-footer" style="padding: 20px; border-top: 1px solid #eee; text-align: right;">
@@ -286,15 +286,15 @@ function showEmployeeAssignmentModal(roomName) {
         employeesListContainer.innerHTML = employeesList.map(emp => `
             <div class="employee-item" style="display: flex; justify-content: space-between; align-items: center; padding: 15px; border: 1px solid #eee; border-radius: 8px; background: #f9f9f9;">
                 <div class="employee-info" style="flex: 1;">
-                    <div class="employee-name" style="font-weight: bold; margin-bottom: 5px;">${emp.name}</div>
-                    <div class="employee-role" style="color: #666; font-size: 14px; margin-bottom: 3px;">${emp.role}</div>
-                    <div class="employee-status" style="color: #888; font-size: 12px;">Non assigné</div>
+                <div class="employee-name" style="font-weight: bold; margin-bottom: 5px;">${emp.name}</div>
+                <div class="employee-role" style="color: #666; font-size: 14px; margin-bottom: 3px;">${emp.role}</div>
+                <div class="employee-status" style="color: #888; font-size: 12px;">Non assigné</div>
                 </div>
                 <button class="btn-assign" onclick="assignEmployeeToRoom(${emp.id}, '${roomName}')" style="background: #28a745; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer;">
                     Assigner
                 </button>
             </div>
-        `).join('');
+        `);
     }
     
     // Événements de fermeture
@@ -405,8 +405,8 @@ function showEmployeeProfile(employeeId) {
     if (employee.experiences && employee.experiences.length > 0) {
         experiencesList.innerHTML = employee.experiences.map(exp => `
             <li>
-                <strong>${exp.company}</strong> - ${exp.position}<br>
-                ${formatDate(exp.from)} - ${formatDate(exp.to)}
+            <strong>${exp.company}</strong> - ${exp.position}<br>
+            ${formatDate(exp.from)} - ${formatDate(exp.to)}
             </li>
         `).join('');
     } else {
@@ -465,16 +465,16 @@ function addExperienceField() {
         
         <div class="flex gap-2 text-black">
             <div class="w-1/2">
-                <label class="font-semibold text-gray-700">From</label>
-                <input type="date" class="exp-from w-full p-1 border rounded text-black">
+            <label class="font-semibold text-gray-700">From</label>
+            <input type="date" class="exp-from w-full p-1 border rounded text-black">
             </div>
             <div class="w-1/2">
-                <label class="font-semibold text-gray-700">To</label>
-                <input type="date" class="exp-to w-full p-1 border rounded text-black">
+            <label class="font-semibold text-gray-700">To</label>
+            <input type="date" class="exp-to w-full p-1 border rounded text-black">
             </div>
         </div>
         <button type="button" class="remove-exp-btn" onclick="this.parentElement.remove()">
-            <i class="fas fa-times"></i>
+        <i class="fas fa-times"></i>
         </button>
     `;
     experiencesList.appendChild(newExperience);
@@ -491,13 +491,14 @@ function resetExperienceFields() {
             <input type="text" class="exp-position p-1 border rounded mb-2 text-black">
             
             <div class="flex gap-2 text-black">
+
                 <div class="w-1/2">
-                    <label class="font-semibold text-gray-700">From</label>
-                    <input type="date" class="exp-from w-full p-1 border rounded text-black">
+                <label class="font-semibold text-gray-700">From</label>
+                <input type="date" class="exp-from w-full p-1 border rounded text-black">
                 </div>
                 <div class="w-1/2">
-                    <label class="font-semibold text-gray-700">To</label>
-                    <input type="date" class="exp-to w-full p-1 border rounded text-black">
+                <label class="font-semibold text-gray-700">To</label>
+                <input type="date" class="exp-to w-full p-1 border rounded text-black">
                 </div>
             </div>
         </div>
