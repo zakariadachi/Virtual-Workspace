@@ -184,6 +184,14 @@ body {
 .room5 { grid-column: 3 / 4; grid-row: 3 / 4; }
 .room6 { grid-column: 4 / 5; grid-row: 3 / 4; }
 
+.room-title {
+  margin: 0 0 10px 0;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  color: #333;
+}
+
 /* Bouton + centré */
 .add-to-room-btn {
   position: absolute;
@@ -735,7 +743,7 @@ body {
 }
 
 /* Responsive */
-@media (max-width: 768px) {
+@media (max-width: 1023px) {
   .main-layout {
     flex-direction: column;
   }
@@ -747,6 +755,7 @@ body {
   }
   
   .plan-grid {
+    background-image: none;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr 1fr 1fr;
     aspect-ratio: auto;
@@ -784,5 +793,3 @@ body {
     margin-bottom: 1.2rem;
   }
 }
-
-

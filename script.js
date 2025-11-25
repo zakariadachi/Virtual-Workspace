@@ -36,7 +36,7 @@ let employees = [
     },
 ];
 let all_roms_ids=[]
-// Restrictions par salle
+
 const roomRestrictions = {
     "Conference Room": ["Manager", "Réceptionniste", "Technicien IT", "Agent de sécurité", "Nettoyage"],
     "Reception": ["Réceptionniste","Manager","Nettoyage"],
@@ -46,7 +46,7 @@ const roomRestrictions = {
     "Archive Room": ["Manager"],
 };
 
-// Initialisation
+//init
 document.addEventListener('DOMContentLoaded', function() {
     initApp();
 });
@@ -56,80 +56,111 @@ function initApp() {
     setupEventListeners();
 }
 
-// Configuration des écouteurs d'événements
+// écouteurs d'événements
 function setupEventListeners() {
-    // Bouton d'ajout d'employé
     const addWorkerBtn = document.getElementById('addWorkerBtn');
     if (addWorkerBtn) {
         addWorkerBtn.addEventListener('click', showAddEmployeeModal);
     }
 
-    // Boutons d'ajout aux salles
-    document.querySelectorAll('.add-to-room-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
-            const roomId = this.getAttribute('data-room');
-            openRoomAssignment(roomId);
-        });
+const buttons = document.querySelectorAll('.add-to-room-btn');
+for (let i = 0; i < buttons.length; i++) {
+    const btn = buttons[i];
+    btn.addEventListener('click', function() {
+    const roomId = this.getAttribute('data-room');
+    openRoomAssignment(roomId);
     });
+}
 
-    // Bouton de fermeture modale
+    // fermer modale
     const closeModalBtn = document.getElementById('closeModalBtn');
     if (closeModalBtn) {
         closeModalBtn.addEventListener('click', hideAddEmployeeModal);
     }
 
-    // Bouton de fermeture profil
+    // fermer profile
     const closeProfileBtn = document.getElementById('closeProfileBtn');
     if (closeProfileBtn) {
         closeProfileBtn.addEventListener('click', hideEmployeeProfile);
     }
 
-    // Formulaire d'ajout d'employé
+    // ajouter employee btn
     const addEmployeeForm = document.getElementById('addEmployeeForm');
     if (addEmployeeForm) {
         addEmployeeForm.addEventListener('submit', handleAddEmployee);
     }
-    // Bouton d'ajout d'expérience
+    // ajouter exp btn
     const addExpBtn = document.getElementById('addExpBtn');
     if (addExpBtn) {
         addExpBtn.addEventListener('click', addExperienceField);
     }
 }
 
-// Chargement des employés
+// Charge employee
 function loadEmployees() {
     loadUnassignedStaff();
     loadAssignedStaff();
 }
 
-// Chargement du staff non assigné
+// Charge staff non assigne
 function loadUnassignedStaff() {
     const staffList = document.getElementById('staffList');
     if (!staffList) return;
 
-    const unassignedEmployees = employees.filter(emp => emp.location === 'Unassigned');
+const unassignedEmployees = [];
+for (let i = 0; i < employees.length; i++) {
+    const emp = employees[i];    
+    if (emp.location === 'Unassigned') {
+        unassignedEmployees.push(emp);
+    }
+}
 
     if (unassignedEmployees.length === 0) {
         staffList.innerHTML = '<div class="empty-message">Aucun employé non assigné</div>';
         return;
     }
 
-    staffList.innerHTML = unassignedEmployees.map(emp => `
-        <div class="staff-item" onclick="showEmployeeProfile(${emp.id})">
-            <div class="staff-avatar">
-                ${emp.photo ? `<img src="${emp.photo}" alt="${emp.name}">` : '<i class="fas fa-user"></i>'}
-            </div>
-            <div class="staff-info">
-                <h4>${emp.name}</h4>
-                <p>${emp.role}</p>
-            </div>
-        </div>
-    `).join('');
+staffList.innerHTML = '';
+
+for (let i = 0; i < unassignedEmployees.length; i++) {
+    const emp = unassignedEmployees[i];
+    const staffItem = document.createElement('div');
+    staffItem.className = 'staff-item';
+        staffItem.onclick = function() {
+        showEmployeeProfile(emp.id);
+    };
+
+    const avatar = document.createElement('div');
+    avatar.className = 'staff-avatar';
+    if (emp.photo) {
+        const img = document.createElement('img');
+        img.src = emp.photo;
+        img.alt = emp.name;
+        avatar.appendChild(img);
+    } else {
+        const icon = document.createElement('i');
+        icon.className = 'fas fa-user';
+        avatar.appendChild(icon);
+    }
+    const staffInfo = document.createElement('div');
+    staffInfo.className = 'staff-info';
+    
+    const name = document.createElement('h4');
+    name.textContent = emp.name;
+    
+    const role = document.createElement('p');
+    role.textContent = emp.role;
+    staffInfo.appendChild(name);
+    staffInfo.appendChild(role);
+    
+    staffItem.appendChild(avatar);
+    staffItem.appendChild(staffInfo);
+    staffList.appendChild(staffItem);
+}
 }
 
 // Chargement du staff assigné
 function loadAssignedStaff() {
-    // Réinitialiser toutes les salles
     for (let i = 1; i <= 6; i++) {
         const staffRoom = document.getElementById(`staffRoom${i}`);
         if (staffRoom) {
@@ -138,34 +169,43 @@ function loadAssignedStaff() {
     }
 
     // Assigner les employés aux salles
-    employees.forEach(emp => {
-        if (emp.location !== 'Unassigned') {
-            const roomElement = document.querySelector(`[data-room="${emp.location}"]`);
-            if (roomElement) {
-                const roomId = roomElement.id;
-                const staffRoom = document.getElementById(`staffRoom${roomId.replace('room', '')}`);
-             
-                if (staffRoom) {
-                    const staffItem = document.createElement('div');
-                    staffItem.className = 'staff-item';
-                    staffItem.innerHTML = `
-                        <div class="staff-avatar">
-                            ${emp.photo ? `<img src="${emp.photo}" alt="${emp.name}">` : '<i class="fas fa-user"></i>'}
-                        </div>
-                        <div class="staff-info">
-                            <h4>${emp.name}</h4>
-                            <p>${emp.role}</p>
-                        </div>
-                        <button class="remove-staff-btn" onclick="removeFromRoom(${emp.id})">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    `;
-                    staffRoom.appendChild(staffItem);
-               
+ for (let i = 0; i < employees.length; i++) {
+    const emp = employees[i];
+    
+    if (emp.location !== 'Unassigned') {
+        const roomElement = document.querySelector('[data-room="' + emp.location + '"]');
+        
+        if (roomElement) {
+            const roomId = roomElement.id;
+            const roomNumber = roomId.replace('room', '');
+            const staffRoom = document.getElementById('staffRoom' + roomNumber);
+            
+            if (staffRoom) {
+                const staffItem = document.createElement('div');
+                staffItem.className = 'staff-item';
+                
+                let avatarContent = '';
+                if (emp.photo) {
+                    avatarContent = '<img src="' + emp.photo + '" alt="' + emp.name + '">';
+                } else {
+                    avatarContent = '<i class="fas fa-user"></i>';
                 }
+                
+                staffItem.innerHTML = 
+                    '<div class="staff-avatar">' + avatarContent + '</div>' +
+                    '<div class="staff-info">' +
+                    '<h4>' + emp.name + '</h4>' +
+                    '<p>' + emp.role + '</p>' +
+                    '</div>' +
+                    '<button class="remove-staff-btn" onclick="removeFromRoom(' + emp.id + ')">' +
+                    '<i class="fas fa-times"></i>' +
+                    '</button>';
+                
+                staffRoom.appendChild(staffItem);
             }
         }
-    });
+    }
+ }
 
     
     // Afficher red background pour les salles vides
@@ -184,11 +224,12 @@ function loadAssignedStaff() {
         } 
     }
 
-    for(r of all_roms_ids){
-    let room = document.getElementById(r)
-
-    if(room.querySelector(".staff-item")!=null){
-    room.parentElement.style.background="none";
+for (let i = 0; i < all_roms_ids.length; i++) {
+    let roomId = all_roms_ids[i];
+    let room = document.getElementById(roomId);
+    
+    if (room.querySelector(".staff-item") !== null) {
+        room.parentElement.style.background = "none";
     }
 }
 }
@@ -209,7 +250,6 @@ function openRoomAssignment(roomId) {
 
 // Afficher la modale d'assignation
 function showEmployeeAssignmentModal(roomName) {
-    // Supprimer toute modale existante
     const existingModal = document.querySelector('.assignment-modal');
     if (existingModal) {
         existingModal.remove();
@@ -253,7 +293,7 @@ function showEmployeeAssignmentModal(roomName) {
             </div>
             <div class="modal-body" style="padding: 20px; flex: 1; overflow-y: auto;">
                 <div class="employees-list" id="employeesList" style="display: flex; flex-direction: column; gap: 10px;">
-                <!-- Liste des employés sera générée ici -->
+                    <!-- Liste des employés sera générée ici -->
                 </div>
             </div>
             <div class="modal-footer" style="padding: 20px; border-top: 1px solid #eee; text-align: right;">
@@ -264,17 +304,21 @@ function showEmployeeAssignmentModal(roomName) {
     
     document.body.appendChild(modal);
     
-    // Charger les employés disponibles pour cette salle
-    function loadAvailableEmployees() {
-        const availableEmployees = employees.filter(emp => 
-            emp.location === 'Unassigned' && 
-            canAssignToRoom(emp.role, roomName)
-        );
+    // employes disponibles pour salle
+   function loadAvailableEmployees() {
+    const availableEmployees = [];
+    
+    for (let i = 0; i < employees.length; i++) {
+        const emp = employees[i];
         
-        displayEmployeesList(availableEmployees, roomName);
+        if (emp.location === 'Unassigned' && canAssignToRoom(emp.role, roomName)) {
+            availableEmployees.push(emp);
+        }
+    }
+    displayEmployeesList(availableEmployees, roomName);
     }
     
-    // Afficher la liste des employés
+    // liste des employés
     function displayEmployeesList(employeesList, roomName) {
         const employeesListContainer = modal.querySelector('#employeesList');
         
@@ -283,18 +327,24 @@ function showEmployeeAssignmentModal(roomName) {
             return;
         }
         
-        employeesListContainer.innerHTML = employeesList.map(emp => `
-            <div class="employee-item" style="display: flex; justify-content: space-between; align-items: center; padding: 15px; border: 1px solid #eee; border-radius: 8px; background: #f9f9f9;">
-                <div class="employee-info" style="flex: 1;">
-                <div class="employee-name" style="font-weight: bold; margin-bottom: 5px;">${emp.name}</div>
-                <div class="employee-role" style="color: #666; font-size: 14px; margin-bottom: 3px;">${emp.role}</div>
-                <div class="employee-status" style="color: #888; font-size: 12px;">Non assigné</div>
-                </div>
-                <button class="btn-assign" onclick="assignEmployeeToRoom(${emp.id}, '${roomName}')" style="background: #28a745; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer;">
-                    Assigner
-                </button>
-            </div>
-        `);
+       employeesListContainer.innerHTML = '';
+
+        for (let i = 0; i < employeesList.length; i++) {
+           const emp = employeesList[i];
+           
+           employeesListContainer.innerHTML += `
+               <div class="employee-item" style="display: flex; justify-content: space-between; align-items: center; padding: 15px; border: 1px solid #eee; border-radius: 8px; background: #f9f9f9;">
+                   <div class="employee-info" style="flex: 1;">
+                       <div class="employee-name" style="font-weight: bold; margin-bottom: 5px;">${emp.name}</div>
+                       <div class="employee-role" style="color: #666; font-size: 14px; margin-bottom: 3px;">${emp.role}</div>
+                       <div class="employee-status" style="color: #888; font-size: 12px;">Non assigné</div>
+                   </div>
+                   <button class="btn-assign" onclick="assignEmployeeToRoom(${emp.id}, '${roomName}')" style="background: #28a745; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer;">
+                       Assigner
+                   </button>
+               </div>
+           `;
+        }
     }
     
     // Événements de fermeture
@@ -317,49 +367,55 @@ function showEmployeeAssignmentModal(roomName) {
     loadAvailableEmployees();
 }
 
-// Obtenir les rôles autorisés pour une salle
+// roles autorisés pour une salle
 function getAllowedRoles(roomName) {
     const restrictions = roomRestrictions[roomName];
     if (!restrictions || restrictions.length === 0) return 'Tous les rôles';
     return restrictions.join(', ');
 }
 
-// Assigner un employé à une salle
+// Assigner employee à salle
 function assignEmployeeToRoom(employeeId, roomName) {
-    const employee = employees.find(emp => emp.id === employeeId);
-    
+    let employee = null;
+    for (let i = 0; i < employees.length; i++) {
+        if (employees[i].id === employeeId) {
+            employee = employees[i];
+            break;
+        }
+    }
     if (!employee) {
         return;
     }
-    
     if (canAssignToRoom(employee.role, roomName)) {
         employee.location = roomName;
         loadEmployees();
         
-        // Fermer toutes les modales
-        document.querySelectorAll('.assignment-modal').forEach(modal => {
-            modal.remove();
-        });
+        const modals = document.querySelectorAll('.assignment-modal');
+        for (let i = 0; i < modals.length; i++) {
+            modals[i].remove();
+        }
     }
 }
 
-// Retirer un employé d'une salle
+// Retirer employee d'une salle
 function removeFromRoom(employeeId) {
-    const employee = employees.find(emp => emp.id === employeeId);
-    if (employee) {
-        employee.location = 'Unassigned';
-        loadEmployees();
+    for (let i = 0; i < employees.length; i++) {
+        if (employees[i].id === employeeId) {
+            employees[i].location = 'Unassigned';
+            loadEmployees();
+            break;
+        }
     }
 }
 
-// Vérifier si un rôle peut être assigné à une salle
+// si un rôle peut être assigné à une salle or not
 function canAssignToRoom(role, roomName) {
     const restrictions = roomRestrictions[roomName];
     if (!restrictions || restrictions.length === 0) return true;
     return restrictions.includes(role);
 }
 
-// Gestion de la modale d'ajout d'employé
+// modale d'ajout d'employee
 function showAddEmployeeModal() {
     const modal = document.getElementById('addEmployeeModal');
     if (modal) {
@@ -367,32 +423,54 @@ function showAddEmployeeModal() {
     }
 }
 
+
+// hide modal ajout employee
 function hideAddEmployeeModal() {
     const modal = document.getElementById('addEmployeeModal');
     if (modal) {
         modal.classList.remove('show');
-        // Réinitialiser le formulaire
         document.getElementById('addEmployeeForm').reset();
         resetExperienceFields();
     }
 }
 
-// Gestion du profil employé
+function formatDate(dateString) {
+    if (dateString === '' || dateString === null || dateString === 'Present') {
+        return 'Present';
+    }
+     const parts = dateString.split('-');
+    
+    if (parts.length === 3) {
+        const year = parts[0];
+        const month = parts[1];
+        const day = parts[2];
+         return day + '/' + month + '/' + year;
+    }
+}
+
+// profil employee
 function showEmployeeProfile(employeeId) {
-    const employee = employees.find(emp => emp.id === employeeId);
+    let employee = null;
+    
+    // Remplacer find() par une boucle for
+    for (let i = 0; i < employees.length; i++) {
+        if (employees[i].id === employeeId) {
+            employee = employees[i];
+            break;
+        }
+    }
+    
     if (!employee) return;
 
     const modal = document.getElementById('employeeProfileModal');
     if (!modal) return;
 
-    // Remplir les informations
     document.getElementById('profileName').textContent = employee.name;
     document.getElementById('profileRole').textContent = employee.role;
     document.getElementById('profileLocation').textContent = `Salle: ${employee.location}`;
     document.getElementById('profileEmail').textContent = employee.email || 'Non renseigné';
     document.getElementById('profilePhone').textContent = employee.phone || 'Non renseigné';
 
-    // Photo
     const profilePhoto = document.getElementById('profilePhoto');
     if (employee.photo) {
         profilePhoto.innerHTML = `<img src="${employee.photo}" alt="${employee.name}">`;
@@ -400,15 +478,23 @@ function showEmployeeProfile(employeeId) {
         profilePhoto.innerHTML = '<i class="fas fa-user"></i>';
     }
 
-    // Expériences
     const experiencesList = document.getElementById('profileExperiences');
     if (employee.experiences && employee.experiences.length > 0) {
-        experiencesList.innerHTML = employee.experiences.map(exp => `
-            <li>
-            <strong>${exp.company}</strong> - ${exp.position}<br>
-            ${formatDate(exp.from)} - ${formatDate(exp.to)}
-            </li>
-        `).join('');
+        experiencesList.innerHTML = '';
+        
+        for (let i = 0; i < employee.experiences.length; i++) {
+            const exp = employee.experiences[i];
+            const fromDate = formatDate(exp.from);
+            const toDate = formatDate(exp.to);
+            
+            const experienceItem = document.createElement('li');
+            experienceItem.innerHTML = `
+                <strong>${exp.company}</strong> - ${exp.position}<br>
+                ${fromDate} - ${toDate}
+            `;
+            
+            experiencesList.appendChild(experienceItem);
+        }
     } else {
         experiencesList.innerHTML = '<li>Aucune expérience professionnelle</li>';
     }
@@ -423,21 +509,34 @@ function hideEmployeeProfile() {
     }
 }
 
+function hideEmployeeProfile() {
+    const modal = document.getElementById('employeeProfileModal');
+    if (modal) {
+        modal.classList.remove('show');
+    }
+}
+
 // Gestion du formulaire d'ajout d'employé
 function handleAddEmployee(e) {
     e.preventDefault();
+    if (!validateAddEmployeeForm()) {
+        return;
+    }
     
-    const formData = new FormData(e.target);
+    const name = document.getElementById('name').value;
+    const role = document.getElementById('role').value;
+    const email = document.getElementById('email').value;
+    const phone = document.getElementById('phone').value;
     const experiences = getExperiencesFromForm();
     
     const newEmployee = {
         id: generateId(),
-        name: formData.get('name'),
-        role: formData.get('role'),
+        name: name,
+        role: role,
         location: 'Unassigned',
-        photo: formData.get('photo') || '',
-        email: formData.get('email') || '',
-        phone: formData.get('phone') || '',
+        photo: '',
+        email: email || '',
+        phone: phone || '',
         experiences: experiences
     };
     
@@ -446,12 +545,12 @@ function handleAddEmployee(e) {
     hideAddEmployeeModal();
 }
 
-// Génération d'ID
+// Génération ID
 function generateId() {
     return employees.length > 0 ? Math.max(...employees.map(emp => emp.id)) + 1 : 1;
 }
 
-// Gestion des expériences professionnelles
+// Gestion experience
 function addExperienceField() {
     const experiencesList = document.getElementById('experiencesList');
     const newExperience = document.createElement('div');
@@ -465,16 +564,16 @@ function addExperienceField() {
         
         <div class="flex gap-2 text-black">
             <div class="w-1/2">
-            <label class="font-semibold text-gray-700">From</label>
-            <input type="date" class="exp-from w-full p-1 border rounded text-black">
+                <label class="font-semibold text-gray-700">From</label>
+                <input type="date" class="exp-from w-full p-1 border rounded text-black">
             </div>
             <div class="w-1/2">
-            <label class="font-semibold text-gray-700">To</label>
-            <input type="date" class="exp-to w-full p-1 border rounded text-black">
+                <label class="font-semibold text-gray-700">To</label>
+                <input type="date" class="exp-to w-full p-1 border rounded text-black">
             </div>
         </div>
         <button type="button" class="remove-exp-btn" onclick="this.parentElement.remove()">
-        <i class="fas fa-times"></i>
+            <i class="fas fa-times"></i>
         </button>
     `;
     experiencesList.appendChild(newExperience);
@@ -491,14 +590,13 @@ function resetExperienceFields() {
             <input type="text" class="exp-position p-1 border rounded mb-2 text-black">
             
             <div class="flex gap-2 text-black">
-
                 <div class="w-1/2">
-                <label class="font-semibold text-gray-700">From</label>
-                <input type="date" class="exp-from w-full p-1 border rounded text-black">
+                    <label class="font-semibold text-gray-700">From</label>
+                    <input type="date" class="exp-from w-full p-1 border rounded text-black">
                 </div>
                 <div class="w-1/2">
-                <label class="font-semibold text-gray-700">To</label>
-                <input type="date" class="exp-to w-full p-1 border rounded text-black">
+                    <label class="font-semibold text-gray-700">To</label>
+                    <input type="date" class="exp-to w-full p-1 border rounded text-black">
                 </div>
             </div>
         </div>
@@ -509,7 +607,8 @@ function getExperiencesFromForm() {
     const experiences = [];
     const experienceItems = document.querySelectorAll('.experience-item');
     
-    experienceItems.forEach(item => {
+    for (let i = 0; i < experienceItems.length; i++) {
+        const item = experienceItems[i];
         const company = item.querySelector('.exp-company').value;
         const position = item.querySelector('.exp-position').value;
         const from = item.querySelector('.exp-from').value;
@@ -523,7 +622,83 @@ function getExperiencesFromForm() {
                 to: to || 'Present'
             });
         }
-    });
+    }
     
     return experiences;
+}
+
+function validateAddEmployeeForm() {
+    const name = document.getElementById('name').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    
+    // Reset previous errors
+    clearValidationErrors();
+    
+    let isValid = true;
+
+   const regex = {
+        name: /^[a-zA-ZÀ-ÿ\s']{3,50}$/,
+        email: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{3,}$/,
+        phone: /^\+212\s[6-7]\d{2}\s?\d{2}\s?\d{2}\s?\d{2}\s?$/
+    };
+    
+    // Validation du nom
+    if (name === '') {
+        showError('name', 'Le nom est obligatoire');
+        isValid = false;
+    } else if (!regex.name.test(name)) {
+        showError('name', 'Le nom doit contenir entre 2 et 50 caractères (lettres, espaces, traits d\'union)');
+        isValid = false;
+    }
+    
+    // Validation de l'email
+    if (email !== '') {
+        if (!regex.email.test(email)) {
+            showError('email', 'Format d\'email invalide (ex: exemple@domaine.com)');
+            isValid = false;
+        }
+    }
+    
+    // Validation du téléphone
+    if (phone !== '') {
+        if (!regex.phone.test(phone)) {
+            showError('phone','Format de téléphone invalide (ex: +212 612-345-678)');
+            isValid = false;
+        }
+    }
+    
+    return isValid;
+}
+
+function showError(fieldId, message) {
+    const field = document.getElementById(fieldId);
+    if (!field) return;
+    
+    field.style.borderColor = '#dc2626';
+    field.style.borderWidth = '2px';
+    
+    let errorElement = field.parentNode.querySelector('.error-message');
+    if (!errorElement) {
+        errorElement = document.createElement('div');
+        errorElement.className = 'error-message';
+        errorElement.style.cssText = 'color: #dc2626; font-size: 0.875rem; margin-top: 0.25rem;';
+        field.parentNode.appendChild(errorElement);
+    }
+    errorElement.textContent = message;
+}
+
+function clearValidationErrors() {
+    // Supprimer tous les messages d'erreur
+    const errorMessages = document.querySelectorAll('.error-message');
+    for (let i = 0; i < errorMessages.length; i++) {
+        errorMessages[i].remove();
+    }
+    
+    // Réinitialiser les bordures
+    const inputs = document.querySelectorAll('input, select');
+    for (let i = 0; i < inputs.length; i++) {
+        inputs[i].style.borderColor = '';
+        inputs[i].style.borderWidth = '';
+    }
 }
