@@ -196,7 +196,7 @@ body {
 .add-to-room-btn {
   position: absolute;
   left: 50%;
-  top: 20px;
+  top: 50px;
   transform: translateX(-50%);
   background: var(--success);
   color: #fff;
@@ -369,7 +369,6 @@ body {
   outline: none;
   border-color: var(--secondary);
 }
-
 /* Prévisualisation photo */
 .photo-preview-container {
   display: flex;
@@ -403,7 +402,7 @@ body {
 
 .photo-group input {
   flex: 1;
-}
+} 
 
 /* Expériences */
 .experiences-section {
@@ -752,6 +751,10 @@ body {
     min-width: 100%;
     max-width: 100%;
     border-radius: 0;
+  }
+
+  .room{
+    margin: 1px;
   }
   
   .plan-grid {

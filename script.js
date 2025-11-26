@@ -5,7 +5,7 @@ let employees = [
         name: "Alice Martin",
         role: "Manager",
         location: "Unassigned",
-        photo: "",
+        photo: "https://static.vecteezy.com/system/resources/thumbnails/026/570/649/small/close-up-profile-view-of-pensive-upset-african-american-man-look-in-distance-thinking-of-personal-problems-thoughtful-sad-biracial-male-feel-depressed-lost-in-thoughts-pondering-having-dilemma-photo.jpg",
         email: "alice.martin@email.com",
         phone: "+212 6 12 34 56 78",
         experiences: [
@@ -101,7 +101,6 @@ function loadEmployees() {
     loadUnassignedStaff();
     loadAssignedStaff();
 }
-
 // Charge staff non assigne
 function loadUnassignedStaff() {
     const staffList = document.getElementById('staffList');
@@ -386,6 +385,29 @@ function assignEmployeeToRoom(employeeId, roomName) {
     if (!employee) {
         return;
     }
+    
+    // Vérifier la limite de la salle
+    const roomLimits = {
+        "Conference Room": 10,
+        "Archive Room": 2,
+        "Security Room": 3,
+        "Reception": 1,
+        "Staff Room": 15,
+        "Server Room": 2
+    };
+    
+    let currentCount = 0;
+    for (let i = 0; i < employees.length; i++) {
+        if (employees[i].location === roomName) {
+            currentCount++;
+        }
+    }
+    
+    if (currentCount >= roomLimits[roomName]) {
+        alert("Cette salle a atteint sa limite maximale");
+        return;
+    }
+    
     if (canAssignToRoom(employee.role, roomName)) {
         employee.location = roomName;
         loadEmployees();
@@ -451,8 +473,6 @@ function formatDate(dateString) {
 // profil employee
 function showEmployeeProfile(employeeId) {
     let employee = null;
-    
-    // Remplacer find() par une boucle for
     for (let i = 0; i < employees.length; i++) {
         if (employees[i].id === employeeId) {
             employee = employees[i];
@@ -527,6 +547,7 @@ function handleAddEmployee(e) {
     const role = document.getElementById('role').value;
     const email = document.getElementById('email').value;
     const phone = document.getElementById('phone').value;
+    const photo = document.getElementById('photoInput').value;
     const experiences = getExperiencesFromForm();
     
     const newEmployee = {
@@ -534,7 +555,7 @@ function handleAddEmployee(e) {
         name: name,
         role: role,
         location: 'Unassigned',
-        photo: '',
+        photo: photo,
         email: email || '',
         phone: phone || '',
         experiences: experiences
@@ -655,7 +676,7 @@ function validateAddEmployeeForm() {
     }
     if (phone !== '') {
         if (!regex.phone.test(phone)) {
-            showError('phone','Format de téléphone invalide (ex: +212 612-345-678)');
+            showError('phone','Format de téléphone invalide (ex: +212 612345678)');
             isValid = false;
         }
     }
