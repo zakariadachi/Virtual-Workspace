@@ -1,4 +1,3 @@
-// Données des employés
 let employees = [
     {
         id: 1,
@@ -22,7 +21,7 @@ let employees = [
         name: "Karim Benjelloun",
         role: "Technicien IT",
         location: "Unassigned",
-        photo: "",
+        photo: "https://media.gettyimages.com/id/154956399/fr/photo/anonyme-sur-le-devant.jpg?s=612x612&w=0&k=20&c=eIAXsq9G7KcxHqT1WzwdRAEJ8pM8zkPRaU2oIy-kotw=",
         email: "karim.benjelloun@email.com",
         phone: "+212 6 98 76 54 32",
         experiences: [
@@ -31,6 +30,74 @@ let employees = [
                 position: "Technicien réseau",
                 from: "2019-06-01",
                 to: "2021-12-15"
+            }
+        ]
+    },
+    {
+        id: 3,
+        name: "Sophie Dubois",
+        role: "Agent de sécurité",
+        location: "Unassigned",
+        photo: "https://media.gettyimages.com/id/154956399/fr/photo/anonyme-sur-le-devant.jpg?s=612x612&w=0&k=20&c=eIAXsq9G7KcxHqT1WzwdRAEJ8pM8zkPRaU2oIy-kotw=",
+        email: "sophie.dubois@email.com",
+        phone: "+212 6 23 45 67 89",
+        experiences: [
+            {
+                company: "WebTech Maroc",
+                position: "Développeuse Frontend",
+                from: "2021-02-10",
+                to: "2023-08-15"
+            }
+        ]
+    },
+    {
+        id: 4,
+        name: "Mehdi El Fassi",
+        role: "Nettoyage",
+        location: "Unassigned",
+        photo: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face",
+        email: "mehdi.elfassi@email.com",
+        phone: "+212 6 34 56 78 90",
+        experiences: [
+            {
+                company: "SalesPro Maroc",
+                position: "Commercial B2B",
+                from: "2020-03-01",
+                to: "2022-11-30"
+            }
+        ]
+    },
+    {
+        id: 5,
+        name: "Lina Toumi",
+        role: "Réceptionniste",
+        location: "Unassigned",
+        photo: "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=150&h=150&fit=crop&crop=face",
+        email: "lina.toumi@email.com",
+        phone: "+212 6 45 67 89 01",
+        experiences: [
+            {
+                company: "Creative Agency",
+                position: "Designer Graphique",
+                from: "2019-09-15",
+                to: "2022-05-20"
+            }
+        ]
+    },
+    {
+        id: 6,
+        name: "Youssef Alaoui",
+        role: "Nettoyage",
+        location: "Unassigned",
+        photo: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face",
+        email: "youssef.alaoui@email.com",
+        phone: "+212 6 56 78 90 12",
+        experiences: [
+            {
+                company: "Projet Solutions",
+                position: "Assistant Chef de Projet",
+                from: "2020-07-01",
+                to: "2023-01-15"
             }
         ]
     },
@@ -167,7 +234,7 @@ function loadAssignedStaff() {
         }
     }
 
-    // Assigner les employés aux salles
+    // Assigner les employes aux salles
  for (let i = 0; i < employees.length; i++) {
     const emp = employees[i];
     
@@ -207,7 +274,7 @@ function loadAssignedStaff() {
  }
 
     
-    // Afficher red background pour les salles vides
+    // red background pour les salles vides
     for (let i = 1; i <= 6; i++) {
         const staffRoom = document.getElementById(`staffRoom${i}`);
         all_roms_ids.push(staffRoom.id)
@@ -235,7 +302,7 @@ for (let i = 0; i < all_roms_ids.length; i++) {
 
 
 
-// Ouvrir l'assignation à une salle
+// ouvrir l'assignation a une salle
 function openRoomAssignment(roomId) {
     const roomElement = document.getElementById(roomId);
     if (!roomElement) {
@@ -317,7 +384,7 @@ function showEmployeeAssignmentModal(roomName) {
     displayEmployeesList(availableEmployees, roomName);
     }
     
-    // liste des employés
+    // liste des employee
     function displayEmployeesList(employeesList, roomName) {
         const employeesListContainer = modal.querySelector('#employeesList');
         
@@ -346,7 +413,7 @@ function showEmployeeAssignmentModal(roomName) {
         }
     }
     
-    // Événements de fermeture
+    // evenements de fermeture
     modal.querySelector('.close-modal').addEventListener('click', () => {
         modal.remove();
     });
@@ -355,7 +422,7 @@ function showEmployeeAssignmentModal(roomName) {
         modal.remove();
     });
     
-    // Fermer en cliquant à l'extérieur
+    // Fermer en cliquant a l'exterieur
     modal.addEventListener('click', (e) => {
         if (e.target === modal) {
             modal.remove();
@@ -366,7 +433,7 @@ function showEmployeeAssignmentModal(roomName) {
     loadAvailableEmployees();
 }
 
-// roles autorisés pour une salle
+// roles autorises pour une salle
 function getAllowedRoles(roomName) {
     const restrictions = roomRestrictions[roomName];
     if (!restrictions || restrictions.length === 0) return 'Tous les rôles';
@@ -386,13 +453,13 @@ function assignEmployeeToRoom(employeeId, roomName) {
         return;
     }
     
-    // Vérifier la limite de la salle
+    // la limite de la salle
     const roomLimits = {
-        "Conference Room": 10,
+        "Conference Room": 7,
         "Archive Room": 2,
         "Security Room": 3,
-        "Reception": 1,
-        "Staff Room": 15,
+        "Reception": 4,
+        "Staff Room": 5,
         "Server Room": 2
     };
     
@@ -487,7 +554,6 @@ function showEmployeeProfile(employeeId) {
 
     document.getElementById('profileName').textContent = employee.name;
     document.getElementById('profileRole').textContent = employee.role;
-    document.getElementById('profileLocation').textContent = `Salle: ${employee.location}`;
     document.getElementById('profileEmail').textContent = employee.email || 'Non renseigné';
     document.getElementById('profilePhone').textContent = employee.phone || 'Non renseigné';
 
@@ -566,9 +632,15 @@ function handleAddEmployee(e) {
     hideAddEmployeeModal();
 }
 
-// Génération ID
+// generation ID
 function generateId() {
-    return employees.length > 0 ? Math.max(...employees.map(emp => emp.id)) + 1 : 1;
+    let maxId = 0;
+    for (let i = 0; i < employees.length; i++) {
+        if (employees[i].id > maxId) {
+            maxId = employees[i].id;
+        }
+    }
+    return maxId + 1;
 }
 
 // Gestion experience
